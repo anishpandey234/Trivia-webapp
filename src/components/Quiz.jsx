@@ -3,25 +3,68 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/system';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, TextField, DialogActions } from '@mui/material';
+import { collection, addDoc } from "firebase/firestore";
+import { db } from '../firebase';
 
-const QuizButton = styled(Button)(({ theme, selected, correct, isSubmitted }) => ({
-  background: isSubmitted 
-                ? (selected ? (correct ? 'green' : 'red') : 'none') 
-                : (selected ? '#265667' : 'none'),
-  color: (isSubmitted && !correct && !selected) ? 'black' : 'black',
-  color : (!isSubmitted && selected) ? 'white': 'black',
-  border: isSubmitted && correct ? '3px solid green' : 'none',
-  '&:hover': {
-    background: isSubmitted ? 'inherit' : 'lightgray'
-  }
-}));
+const QuizButton = styled(Button)((props) => {
+    const { selected, correct, isSubmitted } = props;
+    return {
+      background: isSubmitted 
+                  ? (selected ? (correct ? 'green' : 'red') : 'none') 
+                  : (selected ? '#265667' : 'none'),
+      color: (isSubmitted && !correct && !selected) ? 'black' : (!isSubmitted && selected) ? 'white' : 'black',
+      border: (isSubmitted && correct) ? '3px solid green' : 'none',
+      '&:hover': {
+        background: isSubmitted ? 'inherit' : 'lightgray'
+      }
+    };
+  });
+  
 
-const Quiz = ({ quiz }) => {
+const Quiz = ({ quiz,currentUser }) => {
+    console.log(quiz);
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [score, setScore] = useState(0);
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [quizName, setQuizName] = useState('');
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSave = async () => {
+    if (quizName === '') {
+      alert('Please enter a name for your quiz.');
+      return;
+    }
+  
+    // Save quiz to Firestore
+    try {
+      const userQuizCollection = collection(db, 'users', currentUser, 'quizzes');
+      const quizDoc = {
+        name: quizName,
+        quiz: quiz, // the quiz object
+        // any other data you want to save for this quiz
+      };
+      await addDoc(userQuizCollection, quizDoc);
+  
+      handleClose();
+      alert('Quiz saved successfully!');
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  };
+
+  const handleSaveQuiz = () => {
+    handleClickOpen();
+  };
   const handleAnswerSelect = (questionIndex, answerIndex) => {
     if (isSubmitted) return;
 
@@ -39,10 +82,6 @@ const Quiz = ({ quiz }) => {
     }
     setScore(score);
     setIsSubmitted(true);
-  };
-
-  const handleSaveQuiz = () => {
-    // your logic to save the quiz goes here
   };
 
   return (
@@ -74,8 +113,29 @@ const Quiz = ({ quiz }) => {
           <Button variant="contained" onClick={handleSaveQuiz}>Save Quiz</Button>
         </Box>
       }
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Save Quiz</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please enter a name for your quiz.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Quiz Name"
+            type="text"
+            fullWidth
+            value={quizName}
+            onChange={(e) => setQuizName(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSave}>Save</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
-};
+    }  
 
 export default Quiz;

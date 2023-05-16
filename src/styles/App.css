@@ -6,7 +6,9 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: hsl(var(--hue), 100%, 20%);
+    /* background: linear-gradient(90deg,#706e7c,#7e8194); */
+    /* background-color: gray; */
+    /* background-image: url('https://cdn.stocksnap.io/img-thumbs/960w/colorful-pencils_QDZA8FBZYI.jpg'); */
     flex-direction: column;
   }
   
