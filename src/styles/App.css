@@ -1,0 +1,12 @@
+body {
+    --hue: var(--hue-neutral);
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: hsl(var(--hue), 100%, 20%);
+    flex-direction: column;
+  }
+  

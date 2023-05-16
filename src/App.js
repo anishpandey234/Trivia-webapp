@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import HomePage from './components/HomePage';
+import QuizPage from './components/QuizPage';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import './styles/App.css';
 
-function App() {
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#3f51b5', // Change this to match your color scheme
+    },
+    secondary: {
+      main: '#f44336', // Change this to match your color scheme
+    },
+  },
+});
+
+const App = () => {
+  
+  const [quiz, setQuiz] = useState(null);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+    <Router>
+      <Routes>
+        <Route path="/quiz" element={<QuizPage quiz={quiz} />} />
+        <Route path="/" element={<HomePage setQuiz={setQuiz} />} />
+      </Routes>
+    </Router>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
