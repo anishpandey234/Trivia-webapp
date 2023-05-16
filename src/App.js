@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import QuizPage from './components/QuizPage';
+import NavBar from './components/navbar';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './styles/App.css';
 
@@ -22,12 +23,13 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-    <Router>
-      <Routes>
-        <Route path="/quiz" element={<QuizPage quiz={quiz} />} />
-        <Route path="/" element={<HomePage setQuiz={setQuiz} />} />
-      </Routes>
-    </Router>
+      <NavBar />
+      <Router>
+        <Routes>
+          <Route path="/quiz" element={<QuizPage quiz={quiz} />} />
+          <Route path="/" element={<HomePage setQuiz={setQuiz} />} />
+        </Routes>
+      </Router>
     </ThemeProvider>
   );
 };

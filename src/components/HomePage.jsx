@@ -33,6 +33,7 @@ const HomePage = ({ setQuiz }) => {
       if (response.status === 200) {
         const data =response.data;
         const tokens = data.usage.total_tokens;
+        console.log(data.choices[0].message.content);
         const parsedQuiz = parseQuiz(data.choices[0].message.content);
         console.log(parsedQuiz);
         console.log(tokens);

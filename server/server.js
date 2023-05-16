@@ -32,7 +32,6 @@ app.post('/api/submit-text', async (req, res) => {
       Answer: X"`}],
       max_tokens: 1500
     });
-    
 
     res.json(gptResponse.data);
     
