@@ -7,19 +7,17 @@ import { Dialog, DialogTitle, DialogContent, DialogContentText, TextField, Dialo
 import { collection, addDoc } from "firebase/firestore";
 import { db } from '../firebase';
 
-const QuizButton = styled(Button)((props) => {
-    const { selected, correct, issubmitted } = props;
-    return {
-      background: issubmitted 
-                  ? (selected ? (correct ? 'green' : 'red') : 'none') 
-                  : (selected ? '#265667' : 'none'),
-      color: (issubmitted && !correct && !selected) ? 'black' : (!issubmitted && selected) ? 'white' : 'black',
-      border: (issubmitted && correct) ? '3px solid green' : 'none',
-      '&:hover': {
-        background: issubmitted ? 'inherit' : 'lightgray'
-      }
-    };
-});
+const QuizButton = styled(Button)(({ selected, correct, issubmitted }) => ({
+  background: issubmitted 
+              ? (selected ? (correct ? 'green' : 'red') : 'none') 
+              : (selected ? '#265667' : 'none'),
+  color: (issubmitted && !correct && !selected) ? 'black' : (!issubmitted && selected) ? 'white' : 'black',
+  border: (issubmitted && correct) ? '3px solid green' : 'none',
+  '&:hover': {
+      background: issubmitted ? 'inherit' : 'lightgray'
+  }
+}));
+
 
 const Quiz = ({ quiz, currentUser }) => {
   const [selectedAnswers, setSelectedAnswers] = useState([]);

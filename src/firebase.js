@@ -25,7 +25,7 @@ export const signInWithGoogle = (onSignIn) => {
       .then(async (result) => {
         const uid = result.user.uid;
         const pfp = result.user.photoURL;
-        localStorage.setItem("profilePic", pfp);
+        // localStorage.setItem("profilePic", pfp);
   
         // Check if user already exists in the database
         const userDoc = doc(db, "users", uid);

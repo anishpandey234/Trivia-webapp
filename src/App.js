@@ -11,10 +11,10 @@ import { auth } from './firebase';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#3f51b5', // Change this to match your color scheme
+      main: '#76a5af', // Change this to match your color scheme
     },
     secondary: {
-      main: '#f44336', // Change this to match your color scheme
+      main: '#black', // Change this to match your color scheme
     },
   },
 });
@@ -31,9 +31,9 @@ const App = () => {
         const uid = user.uid;
         setCurrentUser(uid);
       } else {
+        console.log("Signed out");
         // User is signed out.
         setCurrentUser(null);
-
       }
     });
   }, []);

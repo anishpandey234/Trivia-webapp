@@ -31,9 +31,11 @@ const NavBar = ({currentUser, setCurrentUser,setQuiz}) => {
         console.log(quizTitlesArray);
         setQuizzesList(quizzesArray);
         });
-    
         // Cleanup function to unsubscribe from the snapshot listener
         return () => unsubscribe();
+    }
+    else{
+      setQuizzesList([]);
     }
     }, [currentUser]); // re-run the effect when the currentUser changes
 
@@ -73,14 +75,14 @@ const NavBar = ({currentUser, setCurrentUser,setQuiz}) => {
         {profilePic ? (
           <>
             <img src={profilePic} referrerPolicy="no-referrer" alt="Profile" style={{ height: '35px', width:'35px', borderRadius: '50%' }} />
-            <Button color="inherit" onClick={() => signOutUser(() => setCurrentUser(null))} >Logout</Button>
+            <Button color="inherit" onClick={() => signOutUser()} >Logout</Button>
           </>
         ) : (
           <Button color="inherit" onClick={() => signInWithGoogle(setCurrentUser)} >Login</Button>
         )}
       </Toolbar>
     </AppBar>
-    <QuizDrawer quizzesList={quizzesList} drawerOpen={drawerOpen} toggleDrawer={toggleDrawer} setQuiz={setQuiz} />
+    <QuizDrawer quizzesList={quizzesList} drawerOpen={drawerOpen} toggleDrawer={toggleDrawer} setQuiz={setQuiz} currentUser={currentUser} />
     </div>
   );
 };

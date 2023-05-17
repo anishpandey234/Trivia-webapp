@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { useState,useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import CircularProgress from '@mui/material/CircularProgress'; 
 import axios from 'axios';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -18,32 +18,36 @@ const InputField = styled(TextField)({
     },
   });
 
-const StyledButton = styled(Button)({
-  marginTop: '1rem'
-});
+  const StyledButton = styled(Button)(({ theme, loading }) => ({
+    marginTop: '1rem',
+    backgroundColor: loading ? 'white' : theme.palette.primary.main, // Change 'white' to the color you want
+  }));
 
 const HomePage = ({ setQuiz, currentUser }) => {
-const [text, setText] = useState("");
-const navigate = useNavigate();
+    const [text, setText] = useState("");
+    const [loading, setLoading] = useState(false); // add this line
+    const navigate = useNavigate();
 
-const handleSubmit = async (event) => {
-event.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        setLoading(true); // set loading to true when the request starts
 
-try {
-    const response = await axios.post("/api/submit-text", { text });
-    if (response.status === 200) {
-    const data =response.data;
-    const tokens = data.usage.total_tokens;
-    console.log(data.choices[0].message.content);
-    const parsedQuiz = parseQuiz(data.choices[0].message.content);
+        try {
+            const response = await axios.post("/api/submit-text", { text });
+            if (response.status === 200) {
+                const data = response.data;
+                console.log(data.choices[0].message.content);
+                const parsedQuiz = parseQuiz(data.choices[0].message.content);
 
-    setQuiz(parsedQuiz);
-    navigate("/quiz");
-    }
-} catch (error) {
-    console.error("An error occurred:", error);
-}
-};
+                setQuiz(parsedQuiz);
+                navigate("/quiz");
+            }
+        } catch (error) {
+            console.error("An error occurred:", error);
+        } finally {
+            setLoading(false); // set loading to false when the request finishes
+        }
+    };
 
 return (
     <div>
@@ -72,9 +76,9 @@ return (
     value={text}
     onChange={e => setText(e.target.value)}
     />
-    <StyledButton variant="contained" type="submit">
-    Create Quiz
-    </StyledButton>
+    <StyledButton variant="contained" type="submit" disabled={loading}>
+                    {loading ? <CircularProgress size={24} /> : "Create Quiz"}
+                </StyledButton>
 </Box>
 </div>
 );
