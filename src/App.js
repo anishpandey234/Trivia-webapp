@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import QuizPage from './components/QuizPage';
-import NavBar from './components/navbar';
+import NavBar from './components/navBar';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { onAuthStateChanged } from "firebase/auth";
 import './styles/App.css';
@@ -40,11 +40,11 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
       <Router>
+      <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} setQuiz={setQuiz} />
         <Routes>
           <Route path="/quiz" element={<QuizPage quiz={quiz} currentUser={currentUser} />} />
-          <Route path="/" element={<HomePage setQuiz={setQuiz} />} />
+          <Route path="/" element={<HomePage setQuiz={setQuiz} currentUser={currentUser} />} />
         </Routes>
       </Router>
     </ThemeProvider>

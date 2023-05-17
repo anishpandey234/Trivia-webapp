@@ -4,10 +4,6 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import {getFirestore} from "firebase/firestore";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-
 const firebaseConfig = {
   apiKey: "AIzaSyC5sgf9AHqr2ml8SmEDFt8SzzEgcs6sapM",
   authDomain: "quizproject-46fa2.firebaseapp.com",
@@ -18,11 +14,10 @@ const firebaseConfig = {
   measurementId: "G-4CS4DGG3WL"
 };
 
-// Initialize Firebase
+
 const initApp = initializeApp(firebaseConfig);
 export const db = getFirestore();
 export const auth =getAuth(initApp);
-// const analytics = getAnalytics(app);
 
 const provider = new GoogleAuthProvider()
 export const signInWithGoogle = (onSignIn) => {
@@ -43,7 +38,7 @@ export const signInWithGoogle = (onSignIn) => {
             // other properties you want to save for this user
           });
         }
-  
+          
         // Call the onSignIn callback with the uid of the logged-in user
         if (onSignIn) {
           onSignIn(uid);
